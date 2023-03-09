@@ -16,12 +16,10 @@ export class PlacesService {
     const findCityDB = await this.placeModel.findOne({
       city: city.toLowerCase(),
     });
-    console.log('FIND CITY', findCityDB);
 
     if (findCityDB) {
       return findCityDB;
     } else {
-      console.log('else');
       const newData = [];
       const req = await placeRequest(body);
 
