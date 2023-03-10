@@ -13,6 +13,7 @@ export class PlacesService {
 
   async getAll(body) {
     const { city } = body;
+    console.log('PAGE', body.page);
     const findCityDB = await this.placeModel.findOne({
       city: city.toLowerCase(),
     });
