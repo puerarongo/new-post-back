@@ -42,12 +42,7 @@ export class ConsignmentService {
         addressReipient: WarehouseRecipient,
       });
 
-      console.log('createTTN', createTTN);
       return createTTN;
     }
-  }
-
-  postItem() {
-    console.log('post consignment');
   }
 }
