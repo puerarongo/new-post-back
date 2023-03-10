@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, NotFoundException } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import GetPlaceDto from './dto/get-place.dto';
 
@@ -7,9 +7,15 @@ export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
   @Post()
   async getAdresses(@Body() body: GetPlaceDto) {
-    return await this.placesService.getAll({
-      key: process.env.API_KEY,
-      ...body,
-    });
+    try {
+      return await this.placesService.getAll({
+        key: process.env.API_KEY,
+        ...body,
+      });
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`, {
+        description: 'Some error description',
+      });
+    }
   }
 }

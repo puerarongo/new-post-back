@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, NotFoundException } from '@nestjs/common';
 import { ConsignmentService } from './consignment.service';
 import GetConsignmentDto from './dto/get-consignment.dto';
 
@@ -8,9 +8,15 @@ export class ConsignmentController {
 
   @Post()
   async getConsignment(@Body() body: GetConsignmentDto) {
-    return await this.consignmentService.getItem({
-      key: process.env.API_KEY,
-      ...body,
-    });
+    try {
+      return await this.consignmentService.getItem({
+        key: process.env.API_KEY,
+        ...body,
+      });
+    } catch (error) {
+      throw new NotFoundException(`${error.message}`, {
+        description: 'Some error description',
+      });
+    }
   }
 }

@@ -47,7 +47,7 @@ export class PlacesService {
         return createPlace;
       }
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 

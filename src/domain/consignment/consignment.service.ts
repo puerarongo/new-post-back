@@ -46,7 +46,7 @@ export class ConsignmentService {
         return createTTN;
       }
     } catch (err) {
-      return err;
+      throw err;
     }
   }
 }
