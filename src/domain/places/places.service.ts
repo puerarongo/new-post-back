@@ -13,37 +13,41 @@ export class PlacesService {
   ) {}
 
   async getAll(body) {
-    const { city } = body;
-    const findCityDB = await this.placeModel.findOne({
-      city: city.toLowerCase(),
-    });
-
-    if (findCityDB) {
-      return !body.page ? findCityDB : this.getMorePage(findCityDB, body);
-    } else {
-      const newData = [];
-      const req = await placeRequest(body);
-
-      if (req.length <= 0) {
-        return {
-          message: `There are no branches of Nova Poshta in the city of ${body.city}`,
-        };
-      }
-      req.map(({ SiteKey, Description, ShortAddress }: IPlaceData) => {
-        const data = {
-          siteKey: SiteKey,
-          description: Description,
-          address: ShortAddress,
-        };
-        newData.push(data);
-      });
-
-      const createPlace = await this.placeModel.create({
+    try {
+      const { city } = body;
+      const findCityDB = await this.placeModel.findOne({
         city: city.toLowerCase(),
-        departments: newData,
       });
 
-      return createPlace;
+      if (findCityDB) {
+        return !body.page ? findCityDB : this.getMorePage(findCityDB, body);
+      } else {
+        const newData = [];
+        const req = await placeRequest(body);
+
+        if (req.length <= 0) {
+          throw {
+            message: `There are no branches of Nova Poshta in the city of ${body.city}`,
+          };
+        }
+        req.map(({ SiteKey, Description, ShortAddress }: IPlaceData) => {
+          const data = {
+            siteKey: SiteKey,
+            description: Description,
+            address: ShortAddress,
+          };
+          newData.push(data);
+        });
+
+        const createPlace = await this.placeModel.create({
+          city: city.toLowerCase(),
+          departments: newData,
+        });
+
+        return createPlace;
+      }
+    } catch (err) {
+      return err;
     }
   }
 
