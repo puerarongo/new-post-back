@@ -27,7 +27,7 @@ export class PlacesService {
 
         if (req.length <= 0) {
           throw {
-            message: `There are no branches of Nova Poshta in the city of ${body.city}`,
+            message: `Відділень Нової Пошти в м.${body.city} немає!`,
           };
         }
         req.map(({ SiteKey, Description, ShortAddress }: IPlaceData) => {

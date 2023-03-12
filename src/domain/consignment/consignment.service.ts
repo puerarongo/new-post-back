@@ -23,7 +23,7 @@ export class ConsignmentService {
         const req = await consignmentRequest(body);
         if (req.length <= 0 || req[0].Status === 'Номер не найден') {
           throw {
-            message: `There is not exist consignment with this TTN number: ${body.TTN}`,
+            message: `Відправлення з таким номером ТТН не існує: ${body.TTN}`,
           };
         }
         const {
